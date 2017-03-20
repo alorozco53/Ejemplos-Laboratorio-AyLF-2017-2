@@ -1,4 +1,5 @@
 #!/bin/bash
+# Author: AlOrozco53
 
 printf "Executing "
 
@@ -27,10 +28,11 @@ case $1 in
 		# Converts Spanish words to "f" language words; deals with diphthongs
 		echo 'sed -E "s/([aeiou])?([aeiou])/\1f\1\2/g"'
 		sed -E "s/([aeiou])?([aeiou])/\1\2f\2/g" $2 ;;
-	"2a" )
-		# Matches adjacent lines with even number of a's (including accents)
-		echo 'pcregrep -M "^([^aá]*(a|á)[^aá]*(a|á)[^aá]*)*$"'
-		pcregrep -M "^([^aá]*(a|á)[^aá]*(a|á)[^aá]*)*$" $2 ;;
+	"2l" )
+		# Matches adjacent lines l1 and l2 such that l1 has a word beginning with pre- or psi-
+		# and l2 has a word with a diphtongue or triphtonge
+		echo 'pcregrep -M "(.*)\b(pre|psi)(.*)[\r\n](.*)[aeiou]{2,3}(.*)"'
+		pcregrep -M "(.*)\b(pre|psi)(.*)[\r\n](.*)[aeiou]{2,3}(.*)" $2 ;;
 	* )
 		echo "ERREUR" ;;
 esac

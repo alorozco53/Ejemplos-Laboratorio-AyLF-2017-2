@@ -36,11 +36,10 @@ El argumento `<FILE>` es opcional y es una ruta hacia un archivo que se le puede
 `<COMMAND>`. Si no se le especifica dicha ruta, el comportamiento del programa será exactamente el del comando ejecutado
 correspondiente.
 
-Se recomienda fuertemente visualizar cada expresión regular con la herramienta de [éste enlace][1]. Por ejemplo,
+Se recomienda fuertemente visualizar cada expresión regular con la herramienta de [éste enlace](http://www.regexper.com). Por ejemplo,
 para la expresión regular `(.*)\b(pre|psi)(.*)[\r\n](.*)[aeiou]{2,3}(.*)`, la herramienta arroja un autómata como el
 siguiente:
 
 ![autómata](img/dfa.png)
 
-[1]: http://www.regexper.com
 ----
