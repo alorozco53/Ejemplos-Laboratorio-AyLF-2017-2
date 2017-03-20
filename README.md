@@ -40,7 +40,7 @@ Se recomienda fuertemente visualizar cada expresión regular con la herramienta 
 para la expresión regular `(.*)\b(pre|psi)(.*)[\r\n](.*)[aeiou]{2,3}(.*)`, la herramienta arroja un autómata como el
 siguiente:
 
-![autómata](https://github.com/alorozco53/Ejemplos-Laboratorio-AyLF-2017-2/blob/master/img/dfa.svg)
+![autómata](img/dfa.png)
 
 [1]: http://www.regexper.com
 ----
