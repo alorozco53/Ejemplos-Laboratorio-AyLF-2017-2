@@ -42,4 +42,9 @@ siguiente:
 
 ![autómata](img/dfa.png)
 
+### Máquinas de Turing
+
+Plantilla para la práctica 3: [turing_machine.hs](recursive/turing_machine.hs). No compila así como está,
+hay huecos que el alumno debe de resolver
+
 ----
