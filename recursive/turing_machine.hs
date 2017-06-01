@@ -143,12 +143,11 @@ delta = error "to be implemented..."
 -- | Closure for delta function
 deltaEstrella :: MT -> Configuracion -> Bool
 deltaEstrella mt (q, w, n)
-  | q == qf m = True
-  | q == qr m = False
+  | q == estadoAcept mt = True
+  | q == estadoRechazo mt = False
   | otherwise = deltaEstrella mt (delta d (q,w,n))
   where
-    d = dltfun mt
-    m = mtupla mt
+    d = funTransicion mt
 
 -- | Ejercicio 6, decides if the given string is accepted by the given TM
 aceptaCadena :: MT -> Cadena -> Bool
