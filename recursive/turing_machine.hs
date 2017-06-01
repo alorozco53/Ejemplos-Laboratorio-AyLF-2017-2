@@ -1,4 +1,3 @@
-{-# LANGUAGE FlexibleInstances #-}
 {-- Práctica 3
 -- Autómatas y Lenguajes Formales
 -- 2017-2
@@ -33,7 +32,9 @@ data MaqT = MaqT { q :: [Estado],  -- conjunto de estados
                  } deriving Show
 
 -- | Turing machine definition
-type MT = (MaqT, Delta)
+data MT = MT { mtupla :: MaqT,  -- Turing machine tuple structure
+               dltfun :: Delta  -- transition function
+             }
 
 
 -- | Show functions for standard Turing Machines
@@ -58,7 +59,6 @@ pintaDeltaAux :: Delta -> [(Estado, Simbolo)] -> String
 pintaDeltaAux _ [] = "\n"
 pintaDeltaAux t ((e, s):xs) =
   case t e s of
-    -- ("qr", s', m) -> pintaDeltaAux t xs
       (e', s', m) -> "                        d " ++
                      e ++ " " ++ [s] ++ " = " ++ " " ++e' ++
                      " " ++ [s'] ++ " " ++ show m ++ "\n" ++ pintaDeltaAux t xs
@@ -68,20 +68,52 @@ pintaDelta le ls t = pintaDeltaAux t (generaPares le ls)
 
 
 instance Show MT where
-  show (m, d) = "\nEstados:: "
-                ++ pintaEstados (q m) ++ "\n" ++
-                "\nEstado Inicial:: "
-                ++ pintaEstado (q0 m) ++ "\n" ++
-                "\nEstado de Aceptación:: "
-                ++ pintaEstado (qf m) ++ "\n" ++
-                "\nEstado de Rechazo:: "
-                ++ pintaEstado (qr m) ++ "\n" ++
-                "\nAlfabeto de Entrada:: "
-                ++ pintaAlfabeto (s m) ++ "\n" ++
-                "\nAlfabeto de la Cinta:: "
-                ++ pintaAlfabeto (g m) ++ "\n" ++
-                "\nFuncion de Transicion::\n"
-                ++ pintaDelta (q m) (g m) d
+  show mt = "\nEstados:: "
+            ++ pintaEstados (estados mt) ++ "\n" ++
+            "\nEstado Inicial:: "
+            ++ pintaEstado (estadoInicial mt) ++ "\n" ++
+            "\nEstado de Aceptación:: "
+            ++ pintaEstado (estadoAcept mt) ++ "\n" ++
+            "\nEstado de Rechazo:: "
+            ++ pintaEstado (estadoRechazo mt) ++ "\n" ++
+            "\nAlfabeto de Entrada:: "
+            ++ pintaAlfabeto (sigma mt) ++ "\n" ++
+            "\nAlfabeto de la Cinta:: "
+            ++ pintaAlfabeto (gamma mt) ++ "\n" ++
+            "\nFunción de Transición::\n"
+            ++ pintaDelta (estados mt) (gamma mt) d
+    where
+      d = funTransicion mt
+
+
+-- | Gets the input alphabet from a Turing Machine
+sigma :: MT -> Alfabeto
+sigma = s . mtupla
+
+-- | Gets the tape alphabet from a Turing Machine
+gamma :: MT -> Alfabeto
+gamma = g . mtupla
+
+-- | Gets the state set from a Turing Machine
+estados :: MT -> [Estado]
+estados = q . mtupla
+
+-- | Gets the initial state from a Turing Machine
+estadoInicial :: MT -> Estado
+estadoInicial = q0 . mtupla
+
+-- | Gets the accepting state from a Turing Machine
+estadoAcept :: MT -> Estado
+estadoAcept = qf . mtupla
+
+-- | Gets the rejecting state from a Turing Machine
+estadoRechazo :: MT -> Estado
+estadoRechazo = qr . mtupla
+
+-- | Gets the transition function
+funTransicion :: MT -> Delta
+funTransicion = dltfun
+
 
 -- | Ejercicio 3, TM that accepts binary strings with even number of 0's
 tmPares :: MT
@@ -110,10 +142,13 @@ delta = error "to be implemented..."
 
 -- | Closure for delta function
 deltaEstrella :: MT -> Configuracion -> Bool
-deltaEstrella (mt, d) (q, w, n)
-  | q == qf mt = True
-  | q == qr mt = False
-  | otherwise = deltaEstrella (mt, d) (delta d (q,w,n))
+deltaEstrella mt (q, w, n)
+  | q == qf m = True
+  | q == qr m = False
+  | otherwise = deltaEstrella mt (delta d (q,w,n))
+  where
+    d = dltfun mt
+    m = mtupla mt
 
 -- | Ejercicio 6, decides if the given string is accepted by the given TM
 aceptaCadena :: MT -> Cadena -> Bool
