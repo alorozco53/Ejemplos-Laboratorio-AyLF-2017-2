@@ -45,6 +45,44 @@ siguiente:
 ### Máquinas de Turing
 
 Plantilla para la práctica 3: [turing_machine.hs](recursive/turing_machine.hs). No compila así como está,
-hay huecos que el alumno debe de resolver
+hay huecos que el alumno debe de resolver.
 
-----
+Una máquina de Turing está definida por la estructura
+
+```haskell
+data MT = MT { mtupla :: MaqT,
+               dltfun :: Delta
+             }
+```
+
+donde `mtupla` es una 6-tupla que contiene todos los alfabetos y símbolos que la definen y `dltfun` es
+la función de transición. Hay varias maneras de dar explícitamente la definición de una MT en particular;
+sin embargo, el siguiente ejemplo puede ayudar a tener en claro qué se espera que hagan en la práctica.
+La siguiente máquina de Turing intercambia ceros por unos, y viceversa, y acepta el lenguaje `(01)+`.
+
+```haskell
+flippingTM :: MT
+flippingTM = MT (MaqT states initState acceptState rejectState inpAlphabet tapeAlphabet) deltaFun
+  where
+    states = ["q" ++ [c] | c <- "01fr"]
+    initState = "q0"
+    acceptState = "qf"
+    rejectState = "qr"
+    inpAlphabet = "01"
+    tapeAlphabet = "01_"
+    deltaFun = \q -> \a -> case (q, a) of
+                             ("q0", '0') -> ("q1", '1', R)
+                             ("q1", '1') -> ("q0", '0', R)
+                             ("q1", '_') -> ("qf", '_', R)
+                             (_, c) -> ("qr", c, R)
+```
+
+Obsérvese que la función de transición está bien definida para cualesquiera casos de `(q, a)`.
+
+Para obtener cada uno de los elementos que consituyen, se pueden usar las funciones
+`gamma`, `sigma`, `estados`, `estadoInicial`, `estadoAcept`, `estadoRechazo` y `funTransicion`. Por ejemplo,
+
+```haskell
+estados flippingTM
+["q0","q1","qf","qr"]
+```
