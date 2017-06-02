@@ -58,7 +58,7 @@ data MT = MT { mtupla :: MaqT,
 donde `mtupla` es una 6-tupla que contiene todos los alfabetos y símbolos que la definen y `dltfun` es
 la función de transición. Hay varias maneras de dar explícitamente la definición de una MT en particular;
 sin embargo, el siguiente ejemplo puede ayudar a tener en claro qué se espera que hagan en la práctica.
-La siguiente máquina de Turing intercambia ceros por unos, y viceversa, y acepta el lenguaje `(01)+`.
+La siguiente máquina de Turing intercambia ceros por unos, y viceversa, y acepta el lenguaje `(01)+0`.
 
 ```haskell
 flippingTM :: MT
