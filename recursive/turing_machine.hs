@@ -155,7 +155,7 @@ aceptaCadena = error "to be implemented..."
 
 -- | Auxiliar for Kleene star operation
 kln :: Alfabeto -> Int -> [Cadena]
-kln s 0 = [" "]
+kln s 0 = [""]
 kln s n
   | n < 0 = error "invalid index!"
   | otherwise = [a:w | a <- s , w <- kln s (n-1)]
